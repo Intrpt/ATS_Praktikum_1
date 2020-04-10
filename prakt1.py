@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[114]:
+# In[138]:
 
 
 import numpy as np
@@ -15,6 +15,10 @@ from Landmark import Landmark as LM
 # --- MAIN ------
 if __name__ == '__main__':
     print("Starte Main")
+    v1 = Vector(Point(1,5))
+    v2 = Vector(Point(3,7))
+    ang = getAngBetween(v1,v2)
+    print(ang)
     
     
 
@@ -76,7 +80,7 @@ def visualize(V):
     return 1
 
 
-# In[106]:
+# In[135]:
 
 
 
@@ -139,7 +143,7 @@ def getDistance(p1: Point, p2: Point):
 
 #Bestimme, welcher Punkt dem Basispunkt am nähsten ist, Return der Punkt der am nähsten ist.
 #Input: Basispunkt & Liste aus Punkten die vom Basispunkt entfernt sind.
-def getClosest(bp, vps):
+def getClosest(bp:Point, vps):
     if(len(vps) > 0):
         dist = getDistance(bp, vps[0])
         closest = vps[0]
@@ -155,22 +159,36 @@ def getClosest(bp, vps):
     return vp
 
 
-# In[95]:
+# In[123]:
 
 
 #Bestimme einen Vektor zwischen 2 Punkten
-def getVec(p1, p2):
-    vec = Vector(Point(0,0))
-    return vec
+#Input: Punkt p1, p2
+#Output: Vektor P1->P2
+def getVec(p1:Point, p2:Point):
+    x = p2.x-p1.x
+    y = p2.y-p1.y
+    return Vector(Point(x,y))
 
 
-# In[96]:
+# In[137]:
 
 
 #Berechne den Winkel zwischen 2 Vektoren
-def getAngBetween(v1, v2):
-    ang = 12
-    return ang
+def getAngBetween(v1:Vector, v2:Vector):
+    z = v1.p.x * v2.p.x + v1.p.y * v2.p.y
+    n = math.sqrt(math.pow(v1.p.x,2)+math.pow(v1.p.y,2))*math.sqrt(math.pow(v2.p.x,2)+math.pow(v2.p.y,2))
+    return math.degrees(math.acos(z/n))
+
+
+# Beschreibung der Funktion und Head:
+# Es werden 2 Vektoren multipliziert
+# multiplyVectors(Vector v1, Vector v2) return vector
+def multiplyVectors(v1, v2):
+    v = Vector(Point(0,0))
+    v.p.x = v1.p.x * v2.p.x
+    v.p.y = v1.p.y * v2.p.y
+    return v
 
 
 # In[97]:
