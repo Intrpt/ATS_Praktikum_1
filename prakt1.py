@@ -58,6 +58,7 @@ def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
     #3a)
     if ang_tmp_2 > ang_tmp_1:
         size = ang_tmp_2 - ang_tmp_1
+    #3b)
     else:
         size = 360 - ang_tmp_2 + ang_tmp_1
 
