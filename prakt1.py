@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[107]:
+# In[114]:
 
 
 import numpy as np
@@ -15,6 +15,7 @@ from Landmark import Landmark as LM
 # --- MAIN ------
 if __name__ == '__main__':
     print("Starte Main")
+    
     
 
 
@@ -99,7 +100,8 @@ def getIntersection(circle1: LM, circle2: LM):
                 y = circle1.mittelpunkt.y+(qx*((circle2.mittelpunkt.y-circle1.mittelpunkt.y)/c))+(qy*((circle2.mittelpunkt.x-circle1.mittelpunkt.x)/c))
                 result.append(Point(x,y))
             else:
-                print("Achtung!: Kreis(POINT(" + str(circle1.mittelpunkt.x) +"," + str(circle1.mittelpunkt.y) + ")," + str(circle1.radius) + ") und Kreis(POINT(" + str(circle2.mittelpunkt.x) + "," + str(circle1.mittelpunkt.y) + ")," + str(circle1.radius) + ") sind identisch!")
+                raise ValueError('Kreise sind identisch')
+                #print("Achtung!: Kreis(POINT(" + str(circle1.mittelpunkt.x) +"," + str(circle1.mittelpunkt.y) + ")," + str(circle1.radius) + ") und Kreis(POINT(" + str(circle2.mittelpunkt.x) + "," + str(circle1.mittelpunkt.y) + ")," + str(circle1.radius) + ") sind identisch!")
         elif c > 0:
             #Es gibt mehrere Schnittpunkte
             qy1 = math.sqrt(math.pow(circle1.radius,2)-math.pow(qx,2))
@@ -115,9 +117,11 @@ def getIntersection(circle1: LM, circle2: LM):
             result.append(Point(x1,y1))
             result.append(Point(x2,y2))
         else:
-            print("Pos 2 )Achtung!: Kreis(POINT(" + str(circle1.mittelpunkt.x) +"," + str(circle1.mittelpunkt.y) + ")," + str(circle1.radius) + ") und Kreis(POINT(" + str(circle2.mittelpunkt.x) + "," + str(circle1.mittelpunkt.y) + ")," + str(circle1.radius) + ") haben keinen Schnittpunkt!")
+            raise ValueError('Kreise haben keinen Schnittpunkt')
+            #print("Pos 2 )Achtung!: Kreis(POINT(" + str(circle1.mittelpunkt.x) +"," + str(circle1.mittelpunkt.y) + ")," + str(circle1.radius) + ") und Kreis(POINT(" + str(circle2.mittelpunkt.x) + "," + str(circle1.mittelpunkt.y) + ")," + str(circle1.radius) + ") haben keinen Schnittpunkt!")
     else:
-        print("Pos 1 ) Achtung!: Kreis(POINT(" + str(circle1.mittelpunkt.x) +"," + str(circle1.mittelpunkt.y) + ")," + str(circle1.radius) + ") und Kreis(POINT(" + str(circle2.mittelpunkt.x) + "," + str(circle1.mittelpunkt.y) + ")," + str(circle1.radius) + ") haben keinen Schnittpunkt!")
+        raise ValueError('Kreise haben keinen Schnittpunkt')
+        #print("Pos 1 ) Achtung!: Kreis(POINT(" + str(circle1.mittelpunkt.x) +"," + str(circle1.mittelpunkt.y) + ")," + str(circle1.radius) + ") und Kreis(POINT(" + str(circle2.mittelpunkt.x) + "," + str(circle1.mittelpunkt.y) + ")," + str(circle1.radius) + ") haben keinen Schnittpunkt!")
     return result
 
 
@@ -130,13 +134,24 @@ def getDistance(p1: Point, p2: Point):
     return distance
 
 
-# In[94]:
+# In[113]:
 
 
 #Bestimme, welcher Punkt dem Basispunkt am nähsten ist, Return der Punkt der am nähsten ist.
 #Input: Basispunkt & Liste aus Punkten die vom Basispunkt entfernt sind.
 def getClosest(bp, vps):
-    vp = vps[0]
+    if(len(vps) > 0):
+        dist = getDistance(bp, vps[0])
+        closest = vps[0]
+        if(len(vps) > 1):
+            for vp in vps:
+                tempDistance = getDistance(bp,vp)
+                if(tempDistance < dist):
+                    closest = vp
+                    dist = tempDistance
+        return closest
+    else:
+        raise ValueError('getClosest wurde mit einer leeren Liste (VPS) aufgerufen!')
     return vp
 
 
