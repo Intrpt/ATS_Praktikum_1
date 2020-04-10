@@ -49,12 +49,17 @@ def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
     Schnittpunkt2 = Vector(intersection2)
     # 2e) Wir speichern die entfernung zwischen den beiden Schnittpunkten. (Als WInkel in grad)
     ang_tmp = getAngBetween(Schnittpunkt1,Schnittpunkt2)
+    ang_tmp_1 = getAngBetween(Vector(Point(0,1)),Schnittpunkt1)
+    ang_tmp_2 = getAngBetween(Vector(Point(0,1)),Schnittpunkt2)
     # 2f) Wir erstellen je einen Vektor von Snapshotkreis mittelpunkt zum Landmark mittelpunkt und speichern ihn.
     tmp_p = Point(LM_Working_on.mittelpunkt.x - m.mittelpunkt.x, LM_Working_on.mittelpunkt.y - m.mittelpunkt.y)
     vec_model_lm_mittelpunkt = Vector(tmp_p)
 
     #3a)
-
+    if ang_tmp_2 > ang_tmp_1:
+        size = ang_tmp_2 - ang_tmp_1
+    else:
+        size = 360 - ang_tmp_2 + ang_tmp_1
 
 
 
