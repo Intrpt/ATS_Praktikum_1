@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[138]:
+# In[40]:
 
 
 import numpy as np
@@ -15,10 +15,6 @@ from Landmark import Landmark as LM
 # --- MAIN ------
 if __name__ == '__main__':
     print("Starte Main")
-    v1 = Vector(Point(1,5))
-    v2 = Vector(Point(3,7))
-    ang = getAngBetween(v1,v2)
-    print(ang)
     
     
 
@@ -80,7 +76,7 @@ def visualize(V):
     return 1
 
 
-# In[135]:
+# In[ ]:
 
 
 
@@ -129,7 +125,7 @@ def getIntersection(circle1: LM, circle2: LM):
     return result
 
 
-# In[93]:
+# In[ ]:
 
 
 #Berechnung der Entfernung zwischen 2 Punkten
@@ -138,7 +134,7 @@ def getDistance(p1: Point, p2: Point):
     return distance
 
 
-# In[113]:
+# In[ ]:
 
 
 #Bestimme, welcher Punkt dem Basispunkt am nähsten ist, Return der Punkt der am nähsten ist.
@@ -159,7 +155,7 @@ def getClosest(bp:Point, vps):
     return vp
 
 
-# In[123]:
+# In[11]:
 
 
 #Bestimme einen Vektor zwischen 2 Punkten
@@ -171,7 +167,7 @@ def getVec(p1:Point, p2:Point):
     return Vector(Point(x,y))
 
 
-# In[137]:
+# In[33]:
 
 
 #Berechne den Winkel zwischen 2 Vektoren
@@ -191,43 +187,61 @@ def multiplyVectors(v1, v2):
     return v
 
 
-# In[97]:
+# In[30]:
 
 
 #Berechne den WInkel eines Vektors im Bezug auf den gegeben Kreis.
 #Input: Kreis, Vektor
 #Output: Winkel
-def getAng(circle, v):
-    ang = 12
-    return ang
+def getAng(circle:LM, v:Vector):
+    tempVec = getVec(circle.mittelpunkt,Point(circle.mittelpunkt.x,(circle.mittelpunkt.y)+1))
+    return getAngBetween(tempVec, v)
     
 
 
-# In[98]:
+# In[26]:
 
 
 #Berechne den Mittelpunkt-Vektor zwischen 2 Winkeln im Bezug auf den gegeben Kreis
 #Input: Kreis, Winkel1, Winkel2;
-def getMidVec(circle, ang1, ang2):
-    v = Vector(Point(0,1))
+def getMidVec(ang1, ang2, circle:LM):
+    if ang1 == ang2: 
+        raise ValueError('Die beiden gegebenen Winkel sind identisch!')
+    elif ang1 > ang2:
+        ang = ang2+((ang1-ang2)/2)
+    else:
+        ang = ang1+((ang2-ang1)/2)
+    rad = math.radians(ang)
+    v1 = getVec(circle.mittelpunkt,Point(circle.mittelpunkt.x,(circle.mittelpunkt.y)+1))
+    y = 1
+    if circle.mittelpunkt.y != 0:
+        y = circle.mittelpunkt.y
+    x = (v1.p.x*y*math.cos(rad)+v1.p.y*y*math.sin(rad))/(v1.p.y*math.cos(rad)-v1.p.x*math.sin(rad))
+    v = Vector(Point(x,y))
     return v
 
 
-# In[99]:
+# In[ ]:
 
 
 #Vektor negieren
 def negVector(v):
-    nV = Vector(Point(0,0))
+    x = v.p.x*(-1)
+    y = v.p.y*(-1)
+    nV = Vector(Point(x,y))
     return nV
 
 
-# In[100]:
+# In[39]:
 
 
 #Vektor normalisieren mit der Fomel v = sqrt(x²+y²+z²)*Vektor(x,y,z)
 def normVector(v):
-    nV = Vector(Point(0,0))
+    factor = math.sqrt(math.pow(v.p.x,2)+math.pow(v.p.y,2))
+    factor = 1/factor
+    nX = factor*v.p.x
+    nY = factor*v.p.y
+    nV = Vector(Point(nX,nY))
     return nV
 
 
