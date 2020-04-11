@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from Vector import Vector
 from Point import Point
 from Model import Model
+import numpy as np
 from Landmark import Landmark
 
 # --- MAIN ------
@@ -162,6 +163,26 @@ def buildV(Vp, Vt):
 
 def visualize(V):
     #TODO virtualisieren
+    # Config
+    # Dimension ist 14*14
+    grid_dimension = 14
+
+    # Create the Grid
+
+    x = np.arange(-grid_dimension/2, grid_dimension/2+1, 1)
+    y = np.arange(-grid_dimension/2, grid_dimension/2+1, 1)
+
+    xx, yy = np.meshgrid(x, y)
+
+    grid = np.zeros((grid_dimension+1, grid_dimension+1))
+
+    #x,y = np.meshgrid(np.linspace(-5,5,10),np.linspace(-5,5,10))
+
+    u = 1
+    v = 1
+
+    plt.quiver(xx,yy,u,v)
+    plt.show()
     return 1
 
 
