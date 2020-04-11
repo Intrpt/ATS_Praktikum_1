@@ -92,9 +92,32 @@ def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
             m.ang_mid_LM3 = ((ang_tmp_2 - ang_tmp_1) / 2) + ang_tmp_1
             m.size_LM3 = size
             # Alle G werte berechnen
+            # Für G1
             m.ang_mid_G1 =  ((m.ang_1_LM2 - m.ang_2_LM1) / 2) + m.ang_2_LM1
-            m.size_G1 = 
-            m.vec_mid_G1 = 
+            if m.ang_1_LM2 > m.ang_2_LM1:
+                m.size_G1 = m.ang_1_LM2 - m.ang_2_LM1
+            else:
+                m.size_G1 = 360 - m.ang_1_LM2 + m.ang_2_LM1
+            m.vec_mid_G1 = getMidVec(m.ang_2_LM1,m.ang_1_LM2)
+
+            # Für G2
+            m.ang_mid_G2 =  ((m.ang_1_LM3 - m.ang_2_LM2) / 2) + m.ang_2_LM2
+            if m.ang_1_LM3 > m.ang_2_LM2:
+                m.size_G2 = m.ang_1_LM3 - m.ang_2_LM2
+            else:
+                m.size_G2 = 360 - m.ang_1_LM3 + m.ang_2_LM2
+            m.vec_mid_G2 = getMidVec(m.ang_2_LM2,m.ang_1_LM3)
+
+            # Für G3
+            # Kann Falsch sein -------------------------------------------------------------------------------------
+            m.ang_mid_G3 =  ((m.ang_1_LM1 - m.ang_2_LM3) / 2) + m.ang_2_LM3
+            if m.ang_1_LM1 > m.ang_2_LM3:
+                m.size_G3 = m.ang_1_LM1 - m.ang_2_LM3
+            else:
+                m.size_G3 = 360 - m.ang_1_LM1 + m.ang_2_LM3
+            m.vec_mid_G2 = getMidVec(m.ang_2_LM3,m.ang_1_LM1)
+
+
             #TODO G werte fertig berechnen   
 
 
