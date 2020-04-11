@@ -62,6 +62,7 @@ def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
         vec_model_lm_mittelpunkt = Vector(tmp_p)
 
         #3a)
+        size = 0
         if ang_tmp_2 > ang_tmp_1:
             size = ang_tmp_2 - ang_tmp_1
         #3b)
@@ -69,6 +70,32 @@ def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
             size = 360 - ang_tmp_2 + ang_tmp_1
 
 
+        if x == 0:
+            # LM1 (G1) abarbeiten
+            m.vec_mid_LM1 = vec_model_lm_mittelpunkt
+            m.ang_1_LM1 = ang_tmp_1
+            m.ang_2_LM1 = ang_tmp_2
+            m.ang_mid_LM1 = ((ang_tmp_2 - ang_tmp_1) / 2) + ang_tmp_1
+            m.size_LM1 = size
+        elif x == 1:
+            # LM2 (G2) abarbeiten
+            m.vec_mid_LM2 = vec_model_lm_mittelpunkt
+            m.ang_1_LM2 = ang_tmp_1
+            m.ang_2_LM2 = ang_tmp_2
+            m.ang_mid_LM2 = ((ang_tmp_2 - ang_tmp_1) / 2) + ang_tmp_1
+            m.size_LM2 = size
+        elif x == 2:
+            # LM3 (G3) abarbeiten
+            m.vec_mid_LM3 = vec_model_lm_mittelpunkt
+            m.ang_1_LM3 = ang_tmp_1
+            m.ang_2_LM3 = ang_tmp_2
+            m.ang_mid_LM3 = ((ang_tmp_2 - ang_tmp_1) / 2) + ang_tmp_1
+            m.size_LM3 = size
+            # Alle G werte berechnen
+            m.ang_mid_G1 =  ((m.ang_1_LM2 - m.ang_2_LM1) / 2) + m.ang_2_LM1
+            m.size_G1 = 
+            m.vec_mid_G1 = 
+            #TODO G werte fertig berechnen   
 
 
     return m
