@@ -209,7 +209,7 @@ def visualize_show():
 #Berechnung der Schnittpunkte von 2 Kreisen, Return den Schnittpunkt (POINT)
 #Input: Landmark circle1, Landmark circle2
 #Output: Liste mit den Schnittpunkten
-def getIntersection(circle1: LM, circle2: LM):
+def getIntersection(circle1: Landmark, circle2: Landmark):
     #Prüfe, wieviele Schnittpunkte es gibt
     result = []
     c = getDistance(circle1.mittelpunkt,circle2.mittelpunkt)
@@ -318,7 +318,7 @@ def multiplyVectors(v1, v2):
 #Berechne den WInkel eines Vektors im Bezug auf den gegeben Kreis.
 #Input: Kreis, Vektor
 #Output: Winkel
-def getAng(circle:LM, v:Vector):
+def getAng(circle:Landmark, v:Vector):
     tempVec = getVec(circle.mittelpunkt,Point(circle.mittelpunkt.x,(circle.mittelpunkt.y)+1))
     return getAngBetween(tempVec, v)
     
@@ -329,7 +329,7 @@ def getAng(circle:LM, v:Vector):
 
 #Berechne den Mittelpunkt-Vektor zwischen 2 Winkeln im Bezug auf den gegeben Kreis
 #Input: Kreis, Winkel1, Winkel2;
-def getMidVec(ang1, ang2, circle:LM):
+def getMidVec(ang1, ang2, circle:Landmark):
     if ang1 == ang2: 
         raise ValueError('Die beiden gegebenen Winkel sind identisch!')
     elif ang1 > ang2:
