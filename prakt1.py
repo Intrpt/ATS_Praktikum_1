@@ -70,6 +70,7 @@ def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
         else:
             size = 360 - ang_tmp_2 + ang_tmp_1
 
+        # Kann Falsch sein -------------------------------------------------------------------------------------
 
         if x == 0:
             # LM1 (G1) abarbeiten
@@ -116,7 +117,6 @@ def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
             m.vec_mid_G2 = getMidVec(m.ang_2_LM2,m.ang_1_LM3)
 
             # Für G3
-            # Kann Falsch sein -------------------------------------------------------------------------------------
             if m.ang_1_LM1 > m.ang_2_LM3:
                 m.ang_mid_G3 =  ((m.ang_1_LM1 - m.ang_2_LM3) / 2) + m.ang_2_LM3
             elif m.ang_1_LM1 < m.ang_2_LM3:
@@ -127,12 +127,10 @@ def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
                 m.size_G3 = 360 - m.ang_1_LM1 + m.ang_2_LM3
             m.vec_mid_G2 = getMidVec(m.ang_2_LM3,m.ang_1_LM1)
 
-
-            #TODO G werte fertig berechnen   
-
-
+  
     return m
-    #TODO fertigstellen
+
+
 
 # Ändert die Position des Models auf dem Graphen
 #moveModel(model,mid_x, mid_y) 
@@ -168,30 +166,28 @@ def buildV(Vp, Vt):
     return v
 
 # Bereitet den fertigen Graphen vor
-#visualize(Vektor V)
+#visualize(Vektor V, Point p)
 
-def visualize(V):
+def visualize(v,p):
     #TODO virtualisieren
     # Config
     # Dimension ist 14*14
-    grid_dimension = 14
-
+    #grid_dimension = 14
     # Create the Grid
-
-    x = np.arange(-grid_dimension/2, grid_dimension/2+1, 1)
-    y = np.arange(-grid_dimension/2, grid_dimension/2+1, 1)
-
-    xx, yy = np.meshgrid(x, y)
-
-    grid = np.zeros((grid_dimension+1, grid_dimension+1))
-
+    #x = np.arange(-grid_dimension/2, grid_dimension/2+1, 1)
+    #y = np.arange(-grid_dimension/2, grid_dimension/2+1, 1)
+    #xx, yy = np.meshgrid(x, y)
+    #grid = np.zeros((grid_dimension+1, grid_dimension+1))
     #x,y = np.meshgrid(np.linspace(-5,5,10),np.linspace(-5,5,10))
 
-    u = 1
-    v = 1
+    u = v.p.x
+    v = v.p.y
 
-    plt.quiver(xx,yy,u,v)
-    plt.show()
+    plt.quiver(p.x,p.y,u,v)
+    
     return 1
 
-
+def visualize_show():
+    plt.show()
+    plt.close()
+    return 1
