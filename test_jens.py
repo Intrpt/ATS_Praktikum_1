@@ -55,14 +55,14 @@ print("--------------------")
 print("Test von buildVp")
 print("--------------------")
 
-vppaare = {Vector(Point(1,2)),Vector(Point(4,3)),Vector(Point(-6,-4))}
+vppaare = {Vector(Point(-1,-2)),Vector(Point(-4,-3))}
 
 vpsol = buildVp(vppaare)
-print("Der vektor von den Vt paaren ist: "+str(vpsol.p.x)+"|"+str(vpsol.p.y))
+print("Der vektor von den Vp paaren ist: "+str(vpsol.p.x)+"|"+str(vpsol.p.y))
 
 
 print("--------------------")
-print("Test von buildVp")
+print("Test von buildV")
 print("--------------------")
 
 
