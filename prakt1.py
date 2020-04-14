@@ -43,7 +43,7 @@ def addVectors(v1, v2):
 def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
     m = Model(Point(mid_x,mid_y),radius)
 
-    for x in range(0,2):
+    for x in range(0,3):
         # Wir wählen den ersten Landmark aus
         if x == 0:
             LM_Working_on = LM1
@@ -134,7 +134,7 @@ def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
                 m.size_G3 = m.ang_1_LM1 - m.ang_2_LM3
             else:
                 m.size_G3 = 360 - m.ang_1_LM1 + m.ang_2_LM3
-            m.vec_mid_G2 = getMidVec(m.ang_2_LM3,m.ang_1_LM1,Landmark(m.mittelpunkt,m.radius))
+            m.vec_mid_G3 = getMidVec(m.ang_2_LM3,m.ang_1_LM1,Landmark(m.mittelpunkt,m.radius))
 
   
     return m
