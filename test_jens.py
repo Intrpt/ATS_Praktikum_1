@@ -69,6 +69,18 @@ print("--------------------")
 vv = buildV(vpsol,vtsol)
 print("Der vektor von V ist: "+str(vv.p.x)+"|"+str(vv.p.y))
 
+
+print("--------------------")
+print("Test von visualization")
+print("--------------------")
+
+
+visualize(Vector(Point(0,1)),Point(3.5,2))
+visualize(Vector(Point(0,-11)),Point(3.5,-2))
+visualize(Vector(Point(0,1)),Point(0,-4))
+
+visualize_show()
+
 print("--------------------")
 print("Finished Tests")
 print("--------------------")
