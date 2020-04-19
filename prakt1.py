@@ -419,7 +419,7 @@ if __name__ == '__main__':
     print("Mittelpunkt Y:")
     lm1_y = 2
     print("Radius:")
-    rad1 = 1
+    rad1 = 0.5
     print("===============================")
     print("Landmark 2)")
     print("Mittelpunkt X:")
@@ -427,7 +427,7 @@ if __name__ == '__main__':
     print("Mittelpunkt Y:")
     lm2_y = -2
     print("Radius:")
-    rad2 = 1
+    rad2 = 0.5
     print("===============================")
     print("Landmark 3)")
     print("Mittelpunkt X:")
@@ -435,7 +435,7 @@ if __name__ == '__main__':
     print("Mittelpunkt Y:")
     lm3_y = -4
     print("Radius:")
-    rad3 = 1
+    rad3 = 0.5
     
     LM1 = Landmark(Point(lm1_x,lm1_y),rad1)
     LM2 = Landmark(Point(lm2_x,lm2_y),rad2)
