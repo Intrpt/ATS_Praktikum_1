@@ -23,7 +23,7 @@ mo = buildmodel(0,0,1,lm1,lm2,lm3)
 print(mo)
 
 
-print("--------------------")
+""" print("--------------------")
 print("Test von addVectors")
 print("--------------------")
 
@@ -83,4 +83,4 @@ visualize_show()
 
 print("--------------------")
 print("Finished Tests")
-print("--------------------")
+print("--------------------") """
