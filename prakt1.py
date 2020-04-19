@@ -336,7 +336,7 @@ def getAng(circle:Landmark, v:Vector):
 
 #Berechne den Mittelpunkt-Vektor zwischen 2 Winkeln im Bezug auf den gegeben Kreis
 #Input: Kreis, Winkel1, Winkel2;
-def getMidVec(ang1, ang2, circle:Landmark):
+""" def getMidVec(ang1, ang2, circle:Landmark):
     if ang1 == ang2: 
         raise ValueError('Die beiden gegebenen Winkel sind identisch!')
     elif ang1 > ang2:
@@ -350,8 +350,31 @@ def getMidVec(ang1, ang2, circle:Landmark):
         y = circle.mittelpunkt.y
     x = (v1.p.x*y*math.cos(rad)+v1.p.y*y*math.sin(rad))/(v1.p.y*math.cos(rad)-v1.p.x*math.sin(rad))
     v = Vector(Point(x,y))
-    return v
+    return v """
 
+#Berechne den Mittelpunkt-Vektor zwischen 2 Winkeln im Bezug auf den gegeben Kreis
+#Input: Kreis, Winkel1, Winkel2;
+def getMidVec(ang1, ang2, circle:Landmark):
+    if ang1 == ang2: 
+        raise ValueError('Die beiden gegebenen Winkel sind identisch!')
+
+    if ang2 < ang1:
+        #Überlauf
+        ang2= ang2+360
+
+    ang = ang2+((ang1-ang2)/2)
+    rad = math.radians(90-ang)
+
+    x=math.cos(rad)
+    y=math.sin(rad)
+
+    #v1 = getVec(circle.mittelpunkt,Point(circle.mittelpunkt.x,(circle.mittelpunkt.y)+1))
+    #y = 1
+    #if circle.mittelpunkt.y != 0:
+    #    y = circle.mittelpunkt.y
+    #x = (v1.p.xymath.cos(rad)+v1.p.yymath.sin(rad))/(v1.p.ymath.cos(rad)-v1.p.xmath.sin(rad))
+    v = Vector(Point(x,y))
+    return v
 
 # In[ ]:
 

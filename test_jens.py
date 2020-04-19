@@ -23,6 +23,18 @@ mo = buildmodel(0,0,1,lm1,lm2,lm3)
 print(mo)
 
 
+print("--------------------")
+print("Test der FUnktion getMidVec")
+print("--------------------")
+v = getMidVec(133.9, 165, Landmark(Point(0,0),1))
+print("Der vektor ist nun: "+str(v.p.x)+"|"+str(v.p.y))
+
+print("--------------------")
+print("Test der FUnktion getMidVec")
+print("--------------------")
+v = getMidVec(105, 74.5, Landmark(Point(0,0),1))
+print("Der vektor ist nun: "+str(v.p.x)+"|"+str(v.p.y))
+
 """ print("--------------------")
 print("Test von addVectors")
 print("--------------------")
