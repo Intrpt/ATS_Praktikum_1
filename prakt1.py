@@ -60,7 +60,11 @@ def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
         # 2e) Wir speichern die entfernung zwischen den beiden Schnittpunkten. (Als WInkel in grad)
         ang_tmp = getAngBetween(Schnittpunkt1,Schnittpunkt2)
         ang_tmp_1 = getAngBetween(Vector(Point(0,1)),Schnittpunkt1)
+        if m.mittelpunkt.x > Schnittpunkt1.p.x:
+            ang_tmp_1 = 360 -ang_tmp_1
         ang_tmp_2 = getAngBetween(Vector(Point(0,1)),Schnittpunkt2)
+        if m.mittelpunkt.x > Schnittpunkt2.p.x:
+            ang_tmp_2 = 360 -ang_tmp_2
         # 2f) Wir erstellen je einen Vektor von Snapshotkreis mittelpunkt zum Landmark mittelpunkt und speichern ihn.
         tmp_p = Point(LM_Working_on.mittelpunkt.x - m.mittelpunkt.x, LM_Working_on.mittelpunkt.y - m.mittelpunkt.y)
         vec_model_lm_mittelpunkt = Vector(tmp_p)
@@ -105,7 +109,7 @@ def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
             if m.ang_1_LM2 > m.ang_2_LM1:
                 m.size_G1 = m.ang_1_LM2 - m.ang_2_LM1
             else:
-                m.size_G1 = 360 - m.ang_1_LM2 + m.ang_2_LM1
+                m.size_G1 = 360 - m.ang_2_LM1 + m.ang_1_LM2
             m.vec_mid_G1 = getMidVec(m.ang_2_LM1,m.ang_1_LM2,Landmark(m.mittelpunkt,m.radius))
 
             # Für G2
@@ -116,7 +120,7 @@ def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
             if m.ang_1_LM3 > m.ang_2_LM2:
                 m.size_G2 = m.ang_1_LM3 - m.ang_2_LM2
             else:
-                m.size_G2 = 360 - m.ang_1_LM3 + m.ang_2_LM2
+                m.size_G2 = 360 - m.ang_2_LM2 + m.ang_1_LM3
             m.vec_mid_G2 = getMidVec(m.ang_2_LM2,m.ang_1_LM3,Landmark(m.mittelpunkt,m.radius))
 
             # Für G3
@@ -127,7 +131,8 @@ def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
             if m.ang_1_LM1 > m.ang_2_LM3:
                 m.size_G3 = m.ang_1_LM1 - m.ang_2_LM3
             else:
-                m.size_G3 = 360 - m.ang_1_LM1 + m.ang_2_LM3
+                m.size_G3 = 360 - m.ang_2_LM3 + m.ang_1_LM1
+            #m.size_G3 = getAngBetween(LM1.mittelpunkt,LM3.)
             m.vec_mid_G3 = getMidVec(m.ang_2_LM3,m.ang_1_LM1,Landmark(m.mittelpunkt,m.radius))
 
   
@@ -300,10 +305,7 @@ def getAngBetween(v1:Vector, v2:Vector):
     temp = z/n
     if temp > 1:
         temp = 1
-    if v2.p.x < 0 and v2.p.y < 0:
-        return 360-math.degrees(math.acos(temp))
-    else:
-        return math.degrees(math.acos(temp))
+    return math.degrees(math.acos(temp))
 
 
 
@@ -334,7 +336,7 @@ def getAng(circle:Landmark, v:Vector):
 
 #Berechne den Mittelpunkt-Vektor zwischen 2 Winkeln im Bezug auf den gegeben Kreis
 #Input: Kreis, Winkel1, Winkel2;
-def getMidVec(ang1, ang2, circle:Landmark):
+""" def getMidVec(ang1, ang2, circle:Landmark):
     if ang1 == ang2: 
         raise ValueError('Die beiden gegebenen Winkel sind identisch!')
     elif ang1 > ang2:
@@ -348,8 +350,31 @@ def getMidVec(ang1, ang2, circle:Landmark):
         y = circle.mittelpunkt.y
     x = (v1.p.x*y*math.cos(rad)+v1.p.y*y*math.sin(rad))/(v1.p.y*math.cos(rad)-v1.p.x*math.sin(rad))
     v = Vector(Point(x,y))
-    return v
+    return v """
 
+#Berechne den Mittelpunkt-Vektor zwischen 2 Winkeln im Bezug auf den gegeben Kreis
+#Input: Kreis, Winkel1, Winkel2;
+def getMidVec(ang1, ang2, circle:Landmark):
+    if ang1 == ang2: 
+        raise ValueError('Die beiden gegebenen Winkel sind identisch!')
+
+    if ang2 < ang1:
+        #Überlauf
+        ang2= ang2+360
+
+    ang = ang2+((ang1-ang2)/2)
+    rad = math.radians(90-ang)
+
+    x=math.cos(rad)
+    y=math.sin(rad)
+
+    #v1 = getVec(circle.mittelpunkt,Point(circle.mittelpunkt.x,(circle.mittelpunkt.y)+1))
+    #y = 1
+    #if circle.mittelpunkt.y != 0:
+    #    y = circle.mittelpunkt.y
+    #x = (v1.p.xymath.cos(rad)+v1.p.yymath.sin(rad))/(v1.p.ymath.cos(rad)-v1.p.xmath.sin(rad))
+    v = Vector(Point(x,y))
+    return v
 
 # In[ ]:
 
