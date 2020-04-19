@@ -19,7 +19,7 @@ print("--------------------")
 print("Test der FUnktion buildModel")
 print("--------------------")
 
-mo = buildmodel(0,0,1,lm1,lm2,lm3)
+mo = buildmodel(-3,-3,1,lm1,lm2,lm3)
 print(mo)
 
 
