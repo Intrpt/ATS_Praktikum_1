@@ -101,40 +101,66 @@ def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
             m.ang_mid_LM3 = ((ang_tmp_2 - ang_tmp_1) / 2) + ang_tmp_1
             m.size_LM3 = size
             # Alle G werte berechnen
+
+            #Wir prüfen ob ang_x_LMx über 180 sind und tauschen sie dann aus
+            swapped_LM1 = False
+            swapped_LM2 = False
+            swapped_LM3 = False
+            if m.ang_1_LM1>180 and m.ang_2_LM1>180:
+                tmp = m.ang_1_LM1
+                m.ang_1_LM1 = m.ang_2_LM1
+                m.ang_2_LM1 = tmp  
+                swapped_LM1 = True
+            if m.ang_1_LM2>180 and m.ang_2_LM2>180:
+                tmp = m.ang_1_LM2
+                m.ang_1_LM2 = m.ang_2_LM2
+                m.ang_2_LM2 = tmp
+                swapped_LM2 = True
+            if m.ang_1_LM3>180 and m.ang_2_LM3>180:
+                tmp = m.ang_1_LM3
+                m.ang_1_LM3 = m.ang_2_LM3
+                m.ang_2_LM3 = tmp
+                swapped_LM3 = True
+
+
             # Für G1
-            if m.ang_1_LM2 > m.ang_2_LM1:
+
+            if m.ang_1_LM2 > m.ang_2_LM1 or swapped_LM1 or swapped_LM2:
                 m.ang_mid_G1 =  ((m.ang_1_LM2 - m.ang_2_LM1) / 2) + m.ang_2_LM1
-            elif m.ang_1_LM2 < m.ang_2_LM1:
-                m.ang_mid_G1 =  (((m.ang_1_LM2+360) - m.ang_2_LM1) / 2) + m.ang_2_LM1
-            if m.ang_1_LM2 > m.ang_2_LM1:
                 m.size_G1 = m.ang_1_LM2 - m.ang_2_LM1
             else:
+                m.ang_mid_G1 =  (((m.ang_1_LM2+360) - m.ang_2_LM1) / 2) + m.ang_2_LM1
                 m.size_G1 = 360 - m.ang_2_LM1 + m.ang_1_LM2
             m.vec_mid_G1 = getMidVec(m.ang_2_LM1,m.ang_1_LM2,Landmark(m.mittelpunkt,m.radius))
 
             # Für G2
-            if m.ang_1_LM3 > m.ang_2_LM2:
+
+            if m.ang_1_LM3 > m.ang_2_LM2 or swapped_LM2 or swapped_LM3:
                 m.ang_mid_G2 =  ((m.ang_1_LM3 - m.ang_2_LM2) / 2) + m.ang_2_LM2
-            elif m.ang_1_LM3 < m.ang_2_LM2:
-                m.ang_mid_G2 =  (((m.ang_1_LM3+360) - m.ang_2_LM2) / 2) + m.ang_2_LM2
-            if m.ang_1_LM3 > m.ang_2_LM2:
                 m.size_G2 = m.ang_1_LM3 - m.ang_2_LM2
             else:
+                m.ang_mid_G2 =  (((m.ang_1_LM3+360) - m.ang_2_LM2) / 2) + m.ang_2_LM2
                 m.size_G2 = 360 - m.ang_2_LM2 + m.ang_1_LM3
+
             m.vec_mid_G2 = getMidVec(m.ang_2_LM2,m.ang_1_LM3,Landmark(m.mittelpunkt,m.radius))
 
             # Für G3
-            if m.ang_1_LM1 > m.ang_2_LM3:
+
+            if m.ang_1_LM1 > m.ang_2_LM3 or swapped_LM1 or swapped_LM2:
                 m.ang_mid_G3 =  ((m.ang_1_LM1 - m.ang_2_LM3) / 2) + m.ang_2_LM3
-            elif m.ang_1_LM1 < m.ang_2_LM3:
-                m.ang_mid_G3 =  (((m.ang_1_LM1+360) - m.ang_2_LM3) / 2) + m.ang_2_LM3
-            if m.ang_1_LM1 > m.ang_2_LM3:
                 m.size_G3 = m.ang_1_LM1 - m.ang_2_LM3
+
             else:
+                m.ang_mid_G3 =  (((m.ang_1_LM1+360) - m.ang_2_LM3) / 2) + m.ang_2_LM3
                 m.size_G3 = 360 - m.ang_2_LM3 + m.ang_1_LM1
+
             #m.size_G3 = getAngBetween(LM1.mittelpunkt,LM3.)
             m.vec_mid_G3 = getMidVec(m.ang_2_LM3,m.ang_1_LM1,Landmark(m.mittelpunkt,m.radius))
 
+            # Holen nur Absolut werte bei size
+            m.size_G1 = abs(m.size_G1)
+            m.size_G2 = abs(m.size_G2)
+            m.size_G3 = abs(m.size_G3)
   
     return m
 
