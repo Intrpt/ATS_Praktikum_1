@@ -161,7 +161,7 @@ def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
 
             # Für G3
             if m.ang_1_LM1 > m.ang_2_LM3:
-                m.ang_mid_G3 =  ((m.ang_1_LM1 - m.ang_2_LM3) / 2) + m.ang_2_LM3 -180
+                m.ang_mid_G3 =  ((m.ang_1_LM1 - m.ang_2_LM3) / 2) + m.ang_2_LM3
                 m.size_G3 = 360 - (m.ang_1_LM1 - m.ang_2_LM3)
             else:
                 m.ang_mid_G3 =  ((m.ang_2_LM3 - m.ang_1_LM1 ) / 2) + m.ang_1_LM1
@@ -203,8 +203,8 @@ def buildVp(paare):
 #buildV(Vp, Vt) return Vektor
 def buildV(Vp, Vt):
     v = Vector(Point(0,0))
-    v.p.x = Vp.p.x + 3 * Vt.p.x
-    v.p.y = Vp.p.y + 3 * Vt.p.y
+    v.p.x = Vt.p.x + 3 * Vp.p.x
+    v.p.y = Vt.p.y + 3 * Vp.p.y
     return v
 
 # Bereitet den fertigen Graphen vor
