@@ -301,13 +301,13 @@ def getDistance(p1: Point, p2: Point):
 
 #Bestimme, welcher Punkt dem Basispunkt am nähsten ist, Return der Punkt der am nähsten ist.
 #Input: Basispunkt & Liste aus Punkten die vom Basispunkt entfernt sind.
-def getClosest(bp:Point, vps):
+def getClosest(bp:Vector, vps):
     if(len(vps) > 0):
-        dist = getDistance(bp.p, vps[0].p)
+        dist = getAngBetween(bp, vps[0])
         closest = vps[0]
         if(len(vps) > 1):
             for vp in vps:
-                tempDistance = getDistance(bp.p,vp.p)
+                tempDistance = getAngBetween(bp,vp)
                 if(tempDistance < dist):
                     closest = vp
                     dist = tempDistance
@@ -339,7 +339,10 @@ def getAngBetween(v1:Vector, v2:Vector):
     temp = z/n
     if temp > 1:
         temp = 1
-    return math.degrees(math.acos(temp))
+    elif temp < -1:
+        temp = -1
+    temp = math.acos(temp)
+    return math.degrees(temp)
 
 
 
