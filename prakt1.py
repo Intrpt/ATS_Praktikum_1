@@ -70,6 +70,7 @@ def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
         vec_model_lm_mittelpunkt = Vector(tmp_p)
 
         #3a)
+        
         size = 0
         if ang_tmp_2 > ang_tmp_1:
             size = ang_tmp_2 - ang_tmp_1
@@ -82,9 +83,6 @@ def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
         if x == 0:
             # LM1 (G1) abarbeiten
             m.vec_mid_LM1 = vec_model_lm_mittelpunkt
-            
-                
-            
             if mid_x < 0:
                 m.ang_1_LM1 = ang_tmp_1
                 m.ang_2_LM1 = ang_tmp_2
@@ -139,35 +137,77 @@ def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
 
             
             # Alle G werte berechnen
-            # Für G1
-            if m.ang_1_LM2 > m.ang_2_LM1:
-                m.ang_mid_G1 =  ((m.ang_1_LM2 - m.ang_2_LM1) / 2) + m.ang_2_LM1
-                m.size_G1 = m.ang_1_LM2 - m.ang_2_LM1
             
+            # Für G1            
+            if m.ang_1_LM1 < m.ang_2_LM1:
+                if m.ang_2_LM1 > m.ang_1_LM2:
+                    m.size_G1 = 0
+                    m.ang_mid_G1 =  ((m.ang_2_LM1 - m.ang_1_LM2) / 2) + m.ang_1_LM2
+                    m.vec_mid_G1 = getMidVec(m.ang_1_LM2,m.ang_2_LM1,Landmark(m.mittelpunkt,m.radius))
+                else:
+                    m.size_G1 = m.ang_1_LM2 - m.ang_2_LM1
+                    m.ang_mid_G1 =  ((m.ang_1_LM2 - m.ang_2_LM1) / 2) + m.ang_2_LM1
+                    m.vec_mid_G1 = getMidVec(m.ang_2_LM1,m.ang_1_LM2,Landmark(m.mittelpunkt,m.radius))
             else:
-                m.ang_mid_G1 =  ((m.ang_2_LM1 - m.ang_1_LM2 ) / 2) + m.ang_1_LM2 
-                m.size_G1 = m.ang_2_LM1 - m.ang_1_LM2
-            m.vec_mid_G1 = getMidVec(m.ang_2_LM1,m.ang_1_LM2,Landmark(m.mittelpunkt,m.radius))
+                m.vec_mid_G1 = getMidVec(m.ang_1_LM2,m.ang_2_LM1,Landmark(m.mittelpunkt,m.radius))
+                if m.ang_1_LM2 > m.ang_2_LM1:
+                    m.size_G1 = 0
+                    m.ang_mid_G1 =  ((m.ang_1_LM2 - m.ang_2_LM1) / 2) + m.ang_2_LM1
+                    m.vec_mid_G1 = getMidVec(m.ang_2_LM1,m.ang_1_LM2,Landmark(m.mittelpunkt,m.radius))
+                else:
+                    m.ang_mid_G1 =  ((m.ang_2_LM1 - m.ang_1_LM2 ) / 2) + m.ang_1_LM2 
+                    m.vec_mid_G1 = getMidVec(m.ang_1_LM2,m.ang_2_LM1,Landmark(m.mittelpunkt,m.radius))
+                    m.size_G1 = m.ang_2_LM1 - m.ang_1_LM2
+                    
 
             # Für G2
-            if m.ang_1_LM3 > m.ang_2_LM2:
-                m.ang_mid_G2 =  ((m.ang_1_LM3 - m.ang_2_LM2) / 2) + m.ang_2_LM2
-                m.size_G2 = m.ang_1_LM3 - m.ang_2_LM2
+            if m.ang_1_LM2 < m.ang_2_LM2:
+                m.vec_mid_G2 = getMidVec(m.ang_2_LM2,m.ang_1_LM3,Landmark(m.mittelpunkt,m.radius))
+                if m.ang_2_LM2 > m.ang_1_LM3:
+                    m.size_G2 = 0
+                    m.ang_mid_G2 =  ((m.ang_2_LM2 - m.ang_1_LM3) / 2) + m.ang_1_LM3
+                    m.vec_mid_G2 = getMidVec(m.ang_1_LM3,m.ang_2_LM2,Landmark(m.mittelpunkt,m.radius))
+                else:
+                    m.size_G2 = m.ang_1_LM3 - m.ang_2_LM2
+                    m.ang_mid_G2 =  ((m.ang_1_LM3 - m.ang_2_LM2) / 2) + m.ang_2_LM2
+                    m.vec_mid_G2 = getMidVec(m.ang_2_LM2,m.ang_1_LM3,Landmark(m.mittelpunkt,m.radius))
+            
             else:
-                m.ang_mid_G2 =  ((m.ang_2_LM2 - m.ang_1_LM3 ) / 2) + m.ang_1_LM3 
-                m.size_G2 = m.ang_2_LM2 - m.ang_1_LM3
+                m.vec_mid_G2 = getMidVec(m.ang_1_LM3,m.ang_2_LM2,Landmark(m.mittelpunkt,m.radius))
+                if m.ang_1_LM3 > m.ang_2_LM2:
+                    m.size_G2 = 0
+                    m.ang_mid_G2 =  ((m.ang_1_LM3 - m.ang_2_LM2) / 2) + m.ang_2_LM2
+                    m.vec_mid_G2 = getMidVec(m.ang_2_LM2,m.ang_1_LM3,Landmark(m.mittelpunkt,m.radius))
+                else:
+                    m.ang_mid_G2 =  ((m.ang_2_LM2 - m.ang_1_LM3 ) / 2) + m.ang_1_LM3 
+                    m.size_G2 = m.ang_2_LM2 - m.ang_1_LM3
+                    m.vec_mid_G2 = getMidVec(m.ang_1_LM3,m.ang_2_LM2,Landmark(m.mittelpunkt,m.radius))
 
-            m.vec_mid_G2 = getMidVec(m.ang_2_LM2,m.ang_1_LM3,Landmark(m.mittelpunkt,m.radius))
 
             # Für G3
-            if m.ang_1_LM1 > m.ang_2_LM3:
-                m.ang_mid_G3 =  ((m.ang_1_LM1 - m.ang_2_LM3) / 2) + m.ang_2_LM3 -180
-                m.size_G3 = 360 - (m.ang_1_LM1 - m.ang_2_LM3)
+            if m.ang_1_LM3 < m.ang_2_LM3:
+                m.vec_mid_G3 = getMidVec(m.ang_2_LM3,m.ang_1_LM1,Landmark(m.mittelpunkt,m.radius))
+                if m.ang_2_LM3 > m.ang_1_LM1:
+                    m.size_G3 = 0
+                    m.ang_mid_G3 =  ((m.ang_2_LM3 - m.ang_1_LM1) / 2) + m.ang_1_LM1
+                    m.vec_mid_G3 = getMidVec(m.ang_1_LM1,m.ang_2_LM3,Landmark(m.mittelpunkt,m.radius))
+                else:
+                    m.size_G3 = m.ang_1_LM1 - m.ang_2_LM3
+                    m.ang_mid_G3 =  ((m.ang_1_LM1 - m.ang_2_LM3) / 2) + m.ang_2_LM3
+                    m.vec_mid_G3 = getMidVec(m.ang_2_LM3,m.ang_1_LM1,Landmark(m.mittelpunkt,m.radius))
+            
             else:
-                m.ang_mid_G3 =  ((m.ang_2_LM3 - m.ang_1_LM1 ) / 2) + m.ang_1_LM1
-                m.size_G3 = 360 - (m.ang_2_LM3 - m.ang_2_LM1)
-            #m.size_G3 = getAngBetween(LM1.mittelpunkt,LM3.)
-            m.vec_mid_G3 = getMidVec(m.ang_2_LM3,m.ang_1_LM1,Landmark(m.mittelpunkt,m.radius))
+                m.vec_mid_G3 = getMidVec(m.ang_1_LM1,m.ang_2_LM3,Landmark(m.mittelpunkt,m.radius))
+                if m.ang_1_LM1 > m.ang_2_LM3:
+                    m.size_G3 = 0
+                    m.ang_mid_G3 =  ((m.ang_1_LM1 - m.ang_2_LM3) / 2) + m.ang_2_LM3
+                    m.vec_mid_G3 = getMidVec(m.ang_2_LM3,m.ang_1_LM1,Landmark(m.mittelpunkt,m.radius))
+                else:
+                    m.ang_mid_G3 =  ((m.ang_2_LM3 - m.ang_1_LM1 ) / 2) + m.ang_1_LM1 
+                    m.size_G3 = m.ang_2_LM3 - m.ang_1_LM1
+                    m.vec_mid_G3 = getMidVec(m.ang_1_LM1,m.ang_2_LM3,Landmark(m.mittelpunkt,m.radius))
+           
+
 
   
     return m
@@ -203,8 +243,8 @@ def buildVp(paare):
 #buildV(Vp, Vt) return Vektor
 def buildV(Vp, Vt):
     v = Vector(Point(0,0))
-    v.p.x = Vp.p.x + 3 * Vt.p.x
-    v.p.y = Vp.p.y + 3 * Vt.p.y
+    v.p.x = Vt.p.x + 3 * Vp.p.x
+    v.p.y = Vt.p.y + 3 * Vp.p.y
     return v
 
 # Bereitet den fertigen Graphen vor
@@ -301,13 +341,13 @@ def getDistance(p1: Point, p2: Point):
 
 #Bestimme, welcher Punkt dem Basispunkt am nähsten ist, Return der Punkt der am nähsten ist.
 #Input: Basispunkt & Liste aus Punkten die vom Basispunkt entfernt sind.
-def getClosest(bp:Point, vps):
+def getClosest(bp:Vector, vps):
     if(len(vps) > 0):
-        dist = getDistance(bp.p, vps[0].p)
+        dist = getAngBetween(bp, vps[0])
         closest = vps[0]
         if(len(vps) > 1):
             for vp in vps:
-                tempDistance = getDistance(bp.p,vp.p)
+                tempDistance = getAngBetween(bp,vp)
                 if(tempDistance < dist):
                     closest = vp
                     dist = tempDistance
@@ -339,7 +379,10 @@ def getAngBetween(v1:Vector, v2:Vector):
     temp = z/n
     if temp > 1:
         temp = 1
-    return math.degrees(math.acos(temp))
+    elif temp < -1:
+        temp = -1
+    temp = math.acos(temp)
+    return math.degrees(temp)
 
 
 
