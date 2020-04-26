@@ -70,14 +70,14 @@ if __name__ == '__main__':
         turn_vector_LM2 = orthogonalVector(closest_vec_LM2,snapshot.ang_mid_LM2 > closest_vec_LM2_ang)
         turn_vector_LM3 = orthogonalVector(closest_vec_LM3,snapshot.ang_mid_LM3 > closest_vec_LM3_ang)
 
-        tmp = 0
-        visualize(turn_vector_LM1,Point(1,tmp))
-        tmp = tmp + 1
-        visualize(turn_vector_LM1,Point(1,tmp))
-        tmp = tmp + 1
-        visualize(turn_vector_LM3,Point(1,tmp))
-        tmp = tmp + 1
-        visualize_show()
+        # tmp = 0
+        # visualize(turn_vector_LM1,Point(1,tmp))
+        # tmp = tmp + 1
+        # visualize(turn_vector_LM1,Point(1,tmp))
+        # tmp = tmp + 1
+        # visualize(turn_vector_LM3,Point(1,tmp))
+        # tmp = tmp + 1
+        # visualize_show()
 
         #print("    1)Turn Vektoren für G bilden")
         closest_vec_G1 = getClosest(snapshot.vec_mid_G1,[retina.vec_mid_G1,retina.vec_mid_G2,retina.vec_mid_G3])
@@ -89,6 +89,25 @@ if __name__ == '__main__':
         turn_vector_G1 = orthogonalVector(closest_vec_G1,snapshot.ang_mid_G1 > closest_vec_G1_ang)
         turn_vector_G2 = orthogonalVector(closest_vec_G2,snapshot.ang_mid_G2 > closest_vec_G2_ang)
         turn_vector_G3 = orthogonalVector(closest_vec_G3,snapshot.ang_mid_G3 > closest_vec_G3_ang)
+
+        tmp = 0
+        visualize(closest_vec_G1,Point(1,tmp))
+        tmp = tmp + 1
+        visualize(closest_vec_G2,Point(1,tmp))
+        tmp = tmp + 1
+        visualize(closest_vec_G3,Point(1,tmp))
+        tmp = tmp + 1
+        visualize_show()
+
+        tmp = 0
+        visualize(turn_vector_G1,Point(1,tmp))
+        tmp = tmp + 1
+        visualize(turn_vector_G2,Point(1,tmp))
+        tmp = tmp + 1
+        visualize(turn_vector_G3,Point(1,tmp))
+        tmp = tmp + 1
+        visualize_show()
+
 
         #Wann werden die turn_vector negiert???
 

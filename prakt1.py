@@ -143,31 +143,33 @@ def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
             if m.ang_1_LM2 > m.ang_2_LM1:
                 m.ang_mid_G1 =  ((m.ang_1_LM2 - m.ang_2_LM1) / 2) + m.ang_2_LM1
                 m.size_G1 = m.ang_1_LM2 - m.ang_2_LM1
+                m.vec_mid_G1 = getMidVec(m.ang_2_LM1,m.ang_1_LM2,Landmark(m.mittelpunkt,m.radius))
             
             else:
                 m.ang_mid_G1 =  ((m.ang_2_LM1 - m.ang_1_LM2 ) / 2) + m.ang_1_LM2 
                 m.size_G1 = m.ang_2_LM1 - m.ang_1_LM2
-            m.vec_mid_G1 = getMidVec(m.ang_2_LM1,m.ang_1_LM2,Landmark(m.mittelpunkt,m.radius))
+                m.vec_mid_G1 = getMidVec(m.ang_1_LM2,m.ang_2_LM1,Landmark(m.mittelpunkt,m.radius))
 
             # Für G2
             if m.ang_1_LM3 > m.ang_2_LM2:
                 m.ang_mid_G2 =  ((m.ang_1_LM3 - m.ang_2_LM2) / 2) + m.ang_2_LM2
                 m.size_G2 = m.ang_1_LM3 - m.ang_2_LM2
+                m.vec_mid_G2 = getMidVec(m.ang_2_LM2,m.ang_1_LM3,Landmark(m.mittelpunkt,m.radius))
             else:
                 m.ang_mid_G2 =  ((m.ang_2_LM2 - m.ang_1_LM3 ) / 2) + m.ang_1_LM3 
                 m.size_G2 = m.ang_2_LM2 - m.ang_1_LM3
-
-            m.vec_mid_G2 = getMidVec(m.ang_2_LM2,m.ang_1_LM3,Landmark(m.mittelpunkt,m.radius))
+                m.vec_mid_G2 = getMidVec(m.ang_1_LM3,m.ang_2_LM2,Landmark(m.mittelpunkt,m.radius))
 
             # Für G3
             if m.ang_1_LM1 > m.ang_2_LM3:
                 m.ang_mid_G3 =  ((m.ang_1_LM1 - m.ang_2_LM3) / 2) + m.ang_2_LM3
                 m.size_G3 = 360 - (m.ang_1_LM1 - m.ang_2_LM3)
+                m.vec_mid_G3 = getMidVec(m.ang_2_LM3,m.ang_1_LM1,Landmark(m.mittelpunkt,m.radius))
             else:
                 m.ang_mid_G3 =  ((m.ang_2_LM3 - m.ang_1_LM1 ) / 2) + m.ang_1_LM1
                 m.size_G3 = 360 - (m.ang_2_LM3 - m.ang_2_LM1)
+                m.vec_mid_G3 = getMidVec(m.ang_1_LM1,m.ang_2_LM3,Landmark(m.mittelpunkt,m.radius))
             #m.size_G3 = getAngBetween(LM1.mittelpunkt,LM3.)
-            m.vec_mid_G3 = getMidVec(m.ang_2_LM3,m.ang_1_LM1,Landmark(m.mittelpunkt,m.radius))
 
   
     return m
