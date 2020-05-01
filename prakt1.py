@@ -31,15 +31,14 @@ def addVectors(v1, v2):
     v.p.y = v1.p.y + v2.p.y
     return v
 
-# Baut das Model auf. Entweder mit dem Retina oder als
-# Snapshot
+# Baut das Model auf (Retina oder Snapshot).
 #
 #buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3) return model
 def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
     m = Model(Point(mid_x,mid_y),radius)
 
     for x in range(0,3):
-        # Wir wählen den ersten Landmark aus
+        # Wir wählen den Landmark mit dem wir arbeiten (LM1, LM2 oder LM3)
         if x == 0:
             LM_Working_on = LM1
         elif x == 1:
@@ -48,6 +47,8 @@ def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
             LM_Working_on = LM3
 
         # Muss 3 mal gemacht werden
+        
+        # 2) Aufstellen der Vektoren vom Model zu den Landmarks
         # 2a) Wir berechnen die Entfernungen vom Snapshot mittelpunkt(=0,0) zum Mittelpunkt der Landmarks.
         ent_model_zu_LM_Working_on = getDistance(m.mittelpunkt,LM_Working_on.mittelpunkt)
         # Create fake LM
@@ -69,7 +70,8 @@ def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
         # 2f) Wir erstellen je einen Vektor von Snapshotkreis mittelpunkt zum Landmark mittelpunkt und speichern ihn.
         tmp_p = Point(LM_Working_on.mittelpunkt.x - m.mittelpunkt.x, LM_Working_on.mittelpunkt.y - m.mittelpunkt.y)
         vec_model_lm_mittelpunkt = Vector(tmp_p)
-
+        
+        # 3)Mittelpunkte Berechnen
         #3a)
         size = 0
         if ang_tmp_2 > ang_tmp_1:
@@ -78,14 +80,8 @@ def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
         else:
             size = 360 - ang_tmp_2 + ang_tmp_1
 
-        # Kann Falsch sein -------------------------------------------------------------------------------------
-
-        if x == 0:
-            # LM1 (G1) abarbeiten
+        if x == 0: # LM1 (G1) abarbeiten
             m.vec_mid_LM1 = vec_model_lm_mittelpunkt
-            
-                
-            
             if mid_x < 0:
                 m.ang_1_LM1 = ang_tmp_1
                 m.ang_2_LM1 = ang_tmp_2
@@ -101,8 +97,7 @@ def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
             m.size_LM1 = size
             
 
-        elif x == 1:
-            # LM2 (G2) abarbeiten
+        elif x == 1: # LM2 (G2) abarbeiten
             m.vec_mid_LM2 = vec_model_lm_mittelpunkt
             
             if mid_x < 0:
@@ -120,8 +115,7 @@ def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
             m.size_LM2 = size
             
             
-        elif x == 2:
-            # LM3 (G3) abarbeiten
+        elif x == 2: # LM3 (G3) abarbeiten
             m.vec_mid_LM3 = vec_model_lm_mittelpunkt
             if mid_x < 0:
                 m.ang_1_LM3 = ang_tmp_1
@@ -145,7 +139,6 @@ def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
                 m.ang_mid_G1 =  ((m.ang_1_LM2 - m.ang_2_LM1) / 2) + m.ang_2_LM1
                 m.size_G1 = m.ang_1_LM2 - m.ang_2_LM1
                 m.vec_mid_G1 = getMidVec(m.ang_2_LM1,m.ang_1_LM2,Landmark(m.mittelpunkt,m.radius))
-            
             else:
                 m.ang_mid_G1 =  ((m.ang_2_LM1 - m.ang_1_LM2 ) / 2) + m.ang_1_LM2 
                 m.size_G1 = m.ang_2_LM1 - m.ang_1_LM2
@@ -185,7 +178,7 @@ def moveModel(model,mid_x, mid_y):
     return model
 
 # Berechnet den Vt Vektor
-#buildVt(Pair paare[]) return vektor
+#buildVt(Array der Vektoren die zusammen gerechnet werden) return vektor
 def buildVt(paare):
     v = Vector(Point(0,0))
     for value in paare:
@@ -194,7 +187,7 @@ def buildVt(paare):
     return v
 
 # Berechnet den Vp Vektor
-#buildVp(Pair paare[])  return vektor
+#buildVp(Array der Vektoren die zusammen gerechnet werden)  return vektor
 def buildVp(paare):
     v = Vector(Point(0,0))
     for value in paare:
@@ -214,30 +207,21 @@ def buildV(Vp, Vt):
 #visualize(Vektor V, Point p)
 
 def visualize(v,p):
-    #TODO virtualisieren
-    # Config
-    # Dimension ist 14*14
-    #grid_dimension = 14
-    # Create the Grid
-    #x = np.arange(-grid_dimension/2, grid_dimension/2+1, 1)
-    #y = np.arange(-grid_dimension/2, grid_dimension/2+1, 1)
-    #xx, yy = np.meshgrid(x, y)
-    #grid = np.zeros((grid_dimension+1, grid_dimension+1))
-    #x,y = np.meshgrid(np.linspace(-5,5,10),np.linspace(-5,5,10))
-
+    #visualisierung
     u = v.p.x
     v = v.p.y
-
     plt.quiver(p.x,p.y,u,v)
-    
     return 1
 
 def visualize_show():
+    #visualisierung darstellen
     plt.show()
     plt.close()
     return 1
 
 # Berechnet die lokale abweichung in grad
+# Input: show= boolean, ob es angezeigt oder nur berechnet werden soll
+#        Vector= der berechnete Vector V. Position = die Zielposition, wo der Vektor idealerweise hinzeigen soll.
 def abweichungswert_berechnen(show,V:Vector=None,position:Point=None):
     global abweichungswert_total,abweichungs_counter
     if show:
@@ -253,7 +237,8 @@ def abweichungswert_berechnen(show,V:Vector=None,position:Point=None):
 
 # In[ ]:
 
-
+#Berechnet den Orthogonalen Vektor
+#Input: v= Vector, ang= boolean, bestimmt die Richtung ("nach oben oder unten")
 def orthogonalVector(v:Vector,ang):
     if ang:
         return Vector(Point(v.p.y*(-1),v.p.x))
@@ -390,24 +375,6 @@ def getAng(circle:Landmark, v:Vector):
 
 #Berechne den Mittelpunkt-Vektor zwischen 2 Winkeln im Bezug auf den gegeben Kreis
 #Input: Kreis, Winkel1, Winkel2;
-""" def getMidVec(ang1, ang2, circle:Landmark):
-    if ang1 == ang2: 
-        raise ValueError('Die beiden gegebenen Winkel sind identisch!')
-    elif ang1 > ang2:
-        ang = ang2+((ang1-ang2)/2)
-    else:
-        ang = ang1+((ang2-ang1)/2)
-    rad = math.radians(ang)
-    v1 = getVec(circle.mittelpunkt,Point(circle.mittelpunkt.x,(circle.mittelpunkt.y)+1))
-    y = 1
-    if circle.mittelpunkt.y != 0:
-        y = circle.mittelpunkt.y
-    x = (v1.p.x*y*math.cos(rad)+v1.p.y*y*math.sin(rad))/(v1.p.y*math.cos(rad)-v1.p.x*math.sin(rad))
-    v = Vector(Point(x,y))
-    return v """
-
-#Berechne den Mittelpunkt-Vektor zwischen 2 Winkeln im Bezug auf den gegeben Kreis
-#Input: Kreis, Winkel1, Winkel2;
 def getMidVec(ang1, ang2, circle:Landmark):
     if ang1 == ang2: 
         raise ValueError('Die beiden gegebenen Winkel sind identisch!')
@@ -465,31 +432,32 @@ def normVector(v:Vector):
 # --- MAIN ------
 if __name__ == '__main__':
     #Landmarks initialisieren
-    print("=====Landmarks initialisieren=====")
-    print("Landmark besteht aus Mittelpunkt(X,Y) & Radius")
-    print("Landmark 1)")
-    print("Mittelpunkt X:")
+    #print("=====Landmarks initialisieren=====")
+    #print("Landmark besteht aus Mittelpunkt(X,Y) & Radius")
+    #print("Landmark 1)")
+    #print("Mittelpunkt X:")
     lm1_x = 3.5
-    print("Mittelpunkt Y:")
+    #print("Mittelpunkt Y:")
     lm1_y = 2
-    print("Radius:")
+    #print("Radius:")
     rad1 = 0.5
-    print("===============================")
-    print("Landmark 2)")
-    print("Mittelpunkt X:")
+    #print("===============================")
+    #print("Landmark 2)")
+    #print("Mittelpunkt X:")
     lm2_x = 3.5
-    print("Mittelpunkt Y:")
+    #print("Mittelpunkt Y:")
     lm2_y = -2
-    print("Radius:")
+    #print("Radius:")
     rad2 = 0.5
-    print("===============================")
-    print("Landmark 3)")
-    print("Mittelpunkt X:")
+    #print("===============================")
+    #print("Landmark 3)")
+    #print("Mittelpunkt X:")
     lm3_x = 0
-    print("Mittelpunkt Y:")
+    #print("Mittelpunkt Y:")
     lm3_y = -4
-    print("Radius:")
+    #print("Radius:")
     rad3 = 0.5
+    print("Starte Berechnung..")
     
     LM1 = Landmark(Point(lm1_x,lm1_y),rad1)
     LM2 = Landmark(Point(lm2_x,lm2_y),rad2)
@@ -498,11 +466,13 @@ if __name__ == '__main__':
     
     #Snapshot Model entwickeln
     #print("=====Snapshot model wird erstellt=====")
+    print("Berechnet Snapshot model..")
     snapshotKreis = buildmodel(0, 0, 1, LM1, LM2, LM3)
     #print("done!")
     
     #Snapshot model laden und auf Position X, Y verschieben
     retina_radius = 2
+    print("Berechnet Koordinatensystem..")
     for pos_x in range(-7,8):
         for pos_y in range(-7,8):
             if(not(pos_x == 0 and pos_y == 0) and not(pos_x == lm1_x and pos_y == lm1_y) and not(pos_x == lm2_x and pos_y == lm2_y) and not(pos_x == lm3_x and pos_y == lm3_y)):
@@ -543,7 +513,6 @@ if __name__ == '__main__':
                 turn_vector_G2 = orthogonalVector(closest_vec_G2,snapshot.ang_mid_G2 > closest_vec_G2_ang)
                 turn_vector_G3 = orthogonalVector(closest_vec_G3,snapshot.ang_mid_G3 > closest_vec_G3_ang)
 
-                #Wann werden die turn_vector negiert???
 
                 Vt_list = [turn_vector_LM1,turn_vector_LM2,turn_vector_LM3,turn_vector_G1,turn_vector_G2,turn_vector_G3]
                 #print("    1) done")
@@ -655,13 +624,14 @@ if __name__ == '__main__':
                 #print("done!")
                 abweichungswert_berechnen(False,V,retina.mittelpunkt)
 
-                #print("Visualisiere")
+                
                 visualize(V,Point(pos_x,pos_y))
+    print("Die Abweichung liegt bei "+str(abweichungswert_berechnen(True))+" grad.")
+    print("Visualisiere...")
     plt.plot(lm1_x,lm1_y, marker='.', color='r', linestyle='none')
     plt.plot(lm2_x,lm2_y, marker='.', color='r', linestyle='none')
     plt.plot(lm3_x,lm3_y, marker='.', color='r', linestyle='none')
     plt.plot(0,0, marker='X', color='r', linestyle='none')
-    print("Die Abweichung liegt bei "+str(abweichungswert_berechnen(True))+" grad.")
     visualize_show()
 
 
