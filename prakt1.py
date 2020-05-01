@@ -19,7 +19,8 @@ from Model import Model
 import numpy as np
 from Landmark import Landmark
 
-
+abweichungswert_total = 0
+abweichungs_counter = 0
 
 # Beschreibung der Funktion und Head:
 # Es werden 2 Vektoren addiert
@@ -235,6 +236,20 @@ def visualize_show():
     plt.show()
     plt.close()
     return 1
+
+# Berechnet die lokale abweichung in grad
+def abweichungswert_berechnen(show,V:Vector=None,position:Point=None):
+    global abweichungswert_total,abweichungs_counter
+    if show:
+        return abweichungswert_total/abweichungs_counter
+    else:
+        local_abweichung = getAngBetween(V,negVector(Vector(position)))
+        abweichungswert_total = abweichungswert_total + local_abweichung
+        abweichungs_counter = abweichungs_counter + 1
+    return -1
+
+
+
 
 # In[ ]:
 
@@ -638,6 +653,7 @@ if __name__ == '__main__':
                 Vt = buildVt(Vt_list)
                 V = buildV(Vp, Vt)
                 #print("done!")
+                abweichungswert_berechnen(False,V,retina.mittelpunkt)
 
                 #print("Visualisiere")
                 visualize(V,Point(pos_x,pos_y))
@@ -645,6 +661,7 @@ if __name__ == '__main__':
     plt.plot(lm2_x,lm2_y, marker='.', color='r', linestyle='none')
     plt.plot(lm3_x,lm3_y, marker='.', color='r', linestyle='none')
     plt.plot(0,0, marker='X', color='r', linestyle='none')
+    print(abweichungswert_berechnen(True))
     visualize_show()
 
 
