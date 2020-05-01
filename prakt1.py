@@ -19,7 +19,8 @@ from Model import Model
 import numpy as np
 from Landmark import Landmark
 
-
+abweichungswert_total = 0
+abweichungs_counter = 0
 
 # Beschreibung der Funktion und Head:
 # Es werden 2 Vektoren addiert
@@ -82,58 +83,94 @@ def buildmodel(mid_x, mid_y, radius, LM1, LM2, LM3):
         if x == 0:
             # LM1 (G1) abarbeiten
             m.vec_mid_LM1 = vec_model_lm_mittelpunkt
-            m.ang_1_LM1 = ang_tmp_1
-            m.ang_2_LM1 = ang_tmp_2
+            
+                
+            
+            if mid_x < 0:
+                m.ang_1_LM1 = ang_tmp_1
+                m.ang_2_LM1 = ang_tmp_2
+            else:
+                if ang_tmp_1 > ang_tmp_2:
+                    m.ang_1_LM1 = ang_tmp_1
+                    m.ang_2_LM1 = ang_tmp_2
+                else:
+                    m.ang_1_LM1 = ang_tmp_2
+                    m.ang_2_LM1 = ang_tmp_1
+                
             m.ang_mid_LM1 = ((ang_tmp_2 - ang_tmp_1) / 2) + ang_tmp_1
             m.size_LM1 = size
+            
+
         elif x == 1:
             # LM2 (G2) abarbeiten
             m.vec_mid_LM2 = vec_model_lm_mittelpunkt
-            m.ang_1_LM2 = ang_tmp_1
-            m.ang_2_LM2 = ang_tmp_2
+            
+            if mid_x < 0:
+                m.ang_1_LM2 = ang_tmp_1
+                m.ang_2_LM2 = ang_tmp_2
+            else:
+                if ang_tmp_1 > ang_tmp_2:
+                    m.ang_1_LM2 = ang_tmp_1
+                    m.ang_2_LM2 = ang_tmp_2
+                else:
+                    m.ang_1_LM2 = ang_tmp_2
+                    m.ang_2_LM2 = ang_tmp_1
+            
             m.ang_mid_LM2 = ((ang_tmp_2 - ang_tmp_1) / 2) + ang_tmp_1
             m.size_LM2 = size
+            
+            
         elif x == 2:
             # LM3 (G3) abarbeiten
             m.vec_mid_LM3 = vec_model_lm_mittelpunkt
-            m.ang_1_LM3 = ang_tmp_1
-            m.ang_2_LM3 = ang_tmp_2
+            if mid_x < 0:
+                m.ang_1_LM3 = ang_tmp_1
+                m.ang_2_LM3 = ang_tmp_2
+            else:
+                if ang_tmp_1 > ang_tmp_2:
+                    m.ang_1_LM3 = ang_tmp_1
+                    m.ang_2_LM3 = ang_tmp_2
+                else:
+                    m.ang_1_LM3 = ang_tmp_2
+                    m.ang_2_LM3 = ang_tmp_1
+            
             m.ang_mid_LM3 = ((ang_tmp_2 - ang_tmp_1) / 2) + ang_tmp_1
             m.size_LM3 = size
+            
+
+            
             # Alle G werte berechnen
             # Für G1
             if m.ang_1_LM2 > m.ang_2_LM1:
                 m.ang_mid_G1 =  ((m.ang_1_LM2 - m.ang_2_LM1) / 2) + m.ang_2_LM1
-            elif m.ang_1_LM2 < m.ang_2_LM1:
-                m.ang_mid_G1 =  (((m.ang_1_LM2+360) - m.ang_2_LM1) / 2) + m.ang_2_LM1
-            if m.ang_1_LM2 > m.ang_2_LM1:
                 m.size_G1 = m.ang_1_LM2 - m.ang_2_LM1
+                m.vec_mid_G1 = getMidVec(m.ang_2_LM1,m.ang_1_LM2,Landmark(m.mittelpunkt,m.radius))
+            
             else:
-                m.size_G1 = 360 - m.ang_2_LM1 + m.ang_1_LM2
-            m.vec_mid_G1 = getMidVec(m.ang_2_LM1,m.ang_1_LM2,Landmark(m.mittelpunkt,m.radius))
+                m.ang_mid_G1 =  ((m.ang_2_LM1 - m.ang_1_LM2 ) / 2) + m.ang_1_LM2 
+                m.size_G1 = m.ang_2_LM1 - m.ang_1_LM2
+                m.vec_mid_G1 = getMidVec(m.ang_1_LM2,m.ang_2_LM1,Landmark(m.mittelpunkt,m.radius))
 
             # Für G2
             if m.ang_1_LM3 > m.ang_2_LM2:
                 m.ang_mid_G2 =  ((m.ang_1_LM3 - m.ang_2_LM2) / 2) + m.ang_2_LM2
-            elif m.ang_1_LM3 < m.ang_2_LM2:
-                m.ang_mid_G2 =  (((m.ang_1_LM3+360) - m.ang_2_LM2) / 2) + m.ang_2_LM2
-            if m.ang_1_LM3 > m.ang_2_LM2:
                 m.size_G2 = m.ang_1_LM3 - m.ang_2_LM2
+                m.vec_mid_G2 = getMidVec(m.ang_2_LM2,m.ang_1_LM3,Landmark(m.mittelpunkt,m.radius))
             else:
-                m.size_G2 = 360 - m.ang_2_LM2 + m.ang_1_LM3
-            m.vec_mid_G2 = getMidVec(m.ang_2_LM2,m.ang_1_LM3,Landmark(m.mittelpunkt,m.radius))
+                m.ang_mid_G2 =  ((m.ang_2_LM2 - m.ang_1_LM3 ) / 2) + m.ang_1_LM3 
+                m.size_G2 = m.ang_2_LM2 - m.ang_1_LM3
+                m.vec_mid_G2 = getMidVec(m.ang_1_LM3,m.ang_2_LM2,Landmark(m.mittelpunkt,m.radius))
 
             # Für G3
             if m.ang_1_LM1 > m.ang_2_LM3:
                 m.ang_mid_G3 =  ((m.ang_1_LM1 - m.ang_2_LM3) / 2) + m.ang_2_LM3
-            elif m.ang_1_LM1 < m.ang_2_LM3:
-                m.ang_mid_G3 =  (((m.ang_1_LM1+360) - m.ang_2_LM3) / 2) + m.ang_2_LM3
-            if m.ang_1_LM1 > m.ang_2_LM3:
-                m.size_G3 = m.ang_1_LM1 - m.ang_2_LM3
+                m.size_G3 = 360 - (m.ang_1_LM1 - m.ang_2_LM3)
+                m.vec_mid_G3 = getMidVec(m.ang_2_LM3,m.ang_1_LM1,Landmark(m.mittelpunkt,m.radius))
             else:
-                m.size_G3 = 360 - m.ang_2_LM3 + m.ang_1_LM1
+                m.ang_mid_G3 =  ((m.ang_2_LM3 - m.ang_1_LM1 ) / 2) + m.ang_1_LM1
+                m.size_G3 = 360 - (m.ang_2_LM3 - m.ang_2_LM1)
+                m.vec_mid_G3 = getMidVec(m.ang_1_LM1,m.ang_2_LM3,Landmark(m.mittelpunkt,m.radius))
             #m.size_G3 = getAngBetween(LM1.mittelpunkt,LM3.)
-            m.vec_mid_G3 = getMidVec(m.ang_2_LM3,m.ang_1_LM1,Landmark(m.mittelpunkt,m.radius))
 
   
     return m
@@ -169,8 +206,8 @@ def buildVp(paare):
 #buildV(Vp, Vt) return Vektor
 def buildV(Vp, Vt):
     v = Vector(Point(0,0))
-    v.p.x = Vp.p.x + 3 * Vt.p.x
-    v.p.y = Vp.p.y + 3 * Vt.p.y
+    v.p.x = Vt.p.x + 3 * Vp.p.x
+    v.p.y = Vt.p.y + 3 * Vp.p.y
     return v
 
 # Bereitet den fertigen Graphen vor
@@ -199,6 +236,20 @@ def visualize_show():
     plt.show()
     plt.close()
     return 1
+
+# Berechnet die lokale abweichung in grad
+def abweichungswert_berechnen(show,V:Vector=None,position:Point=None):
+    global abweichungswert_total,abweichungs_counter
+    if show:
+        return abweichungswert_total/abweichungs_counter
+    else:
+        local_abweichung = getAngBetween(V,negVector(Vector(position)))
+        abweichungswert_total = abweichungswert_total + local_abweichung
+        abweichungs_counter = abweichungs_counter + 1
+    return -1
+
+
+
 
 # In[ ]:
 
@@ -267,13 +318,13 @@ def getDistance(p1: Point, p2: Point):
 
 #Bestimme, welcher Punkt dem Basispunkt am nähsten ist, Return der Punkt der am nähsten ist.
 #Input: Basispunkt & Liste aus Punkten die vom Basispunkt entfernt sind.
-def getClosest(bp:Point, vps):
+def getClosest(bp:Vector, vps):
     if(len(vps) > 0):
-        dist = getDistance(bp.p, vps[0].p)
+        dist = getAngBetween(bp, vps[0])
         closest = vps[0]
         if(len(vps) > 1):
             for vp in vps:
-                tempDistance = getDistance(bp.p,vp.p)
+                tempDistance = getAngBetween(bp,vp)
                 if(tempDistance < dist):
                     closest = vp
                     dist = tempDistance
@@ -305,7 +356,10 @@ def getAngBetween(v1:Vector, v2:Vector):
     temp = z/n
     if temp > 1:
         temp = 1
-    return math.degrees(math.acos(temp))
+    elif temp < -1:
+        temp = -1
+    temp = math.acos(temp)
+    return math.degrees(temp)
 
 
 
@@ -599,6 +653,7 @@ if __name__ == '__main__':
                 Vt = buildVt(Vt_list)
                 V = buildV(Vp, Vt)
                 #print("done!")
+                abweichungswert_berechnen(False,V,retina.mittelpunkt)
 
                 #print("Visualisiere")
                 visualize(V,Point(pos_x,pos_y))
@@ -606,6 +661,7 @@ if __name__ == '__main__':
     plt.plot(lm2_x,lm2_y, marker='.', color='r', linestyle='none')
     plt.plot(lm3_x,lm3_y, marker='.', color='r', linestyle='none')
     plt.plot(0,0, marker='X', color='r', linestyle='none')
+    print("Die Abweichung liegt bei "+str(abweichungswert_berechnen(True))+" grad.")
     visualize_show()
 
 
