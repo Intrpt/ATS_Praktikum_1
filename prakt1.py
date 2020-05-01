@@ -661,7 +661,7 @@ if __name__ == '__main__':
     plt.plot(lm2_x,lm2_y, marker='.', color='r', linestyle='none')
     plt.plot(lm3_x,lm3_y, marker='.', color='r', linestyle='none')
     plt.plot(0,0, marker='X', color='r', linestyle='none')
-    print(abweichungswert_berechnen(True))
+    print("Die Abweichung liegt bei "+str(abweichungswert_berechnen(True))+" grad.")
     visualize_show()
 
 
